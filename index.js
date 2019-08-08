@@ -6,22 +6,28 @@ document.addEventListener('DOMContentLoaded', () => {
   let joke;
 
   function fetchJoke(){
-    fetch('https://icanhazdadjoke.com/', {
+    return fetch('https://icanhazdadjoke.com/', {
       headers: {
         "Accept": "application/json"
       }
     })
     .then(res => res.json())
-    .then(jokeData => joke = jokeData.joke)
+    .then(jokeData => {joke = jokeData.joke});
   }
 
-  form.addEventListener('submit', (event) => {
-
-    if(username === "") return;
+  function setJoke(){
     fetchJoke()
+  }
+  setJoke()
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    const username = event.target[0].value
+    if(username === "") return;
     newJokeLi.innerHTML = `
     <span class="username">${username} says:</span> ${joke}
     `
     jokeList.appendChild(newJokeLi)
+    setJoke()
   })
 })
